@@ -11,11 +11,11 @@ def count_sep(_list):
     """Accepts list that separated by keys and return list that each place
     indicate the amount of instances of specific key"""
     tmp = []
-    ans = []
+    ans = 0
     for t in _list:
         tmp.append([i for i in t[1]])
     for l in tmp:
-        ans.append(len(l))
+        ans += len(l)
     return ans
 
 
@@ -30,22 +30,20 @@ num_of_words = count_sep(input_data
                          .flatMap(lambda mc: list(list([(mc[1], w) for w in mc[0].split()])))
                          .groupBy(lambda c: c[0])
                          .collect())
+print("num_of_words = ", num_of_words)
 
-#    .map(lambda cw: ((cw[0], cw[1]), 1)) \
-#    .reduceByKey(lambda a, b: a+b)\
-#    .count()
-
-print("num_of_words", num_of_words)
-
-p_tot = sum(p_k.values())
 p_ki = input_data \
     .flatMap(lambda mc: list(set([(mc[1], w) for w in mc[0].split()]))) \
     .map(lambda cw: ((cw[0], cw[1]), 1)) \
     .reduceByKey(lambda a, b: a+b).collectAsMap()
 
+p_tot = sum(p_k.values())
+p_tot = num_of_words
+
+
 query = "hello hi"
 class_probs = [p_k[k]/float(p_tot)
-               * np.prod(np.array([p_ki.get((k, i), 0)/float(num_of_words[k])
+               * np.prod(np.array([p_ki.get((k, i), 0)/float(p_k[k])
                                   for i in query.split()]))for k in range(0, 2)]
 
 print(class_probs, end="\n")
