@@ -8,6 +8,7 @@ sc = SparkContext("local[*]", "Simple App")
 #    mrd.update((x, y+1) for x, y in mrd.items())
 #    return mrd
 
+# Add the query to the trains for Laplace's Smoothing
 
 input_data = sc.parallelize([("Buy it , pay later ! Click me !", 0), ("you Won 10000 Dollars ! Click here !", 0),
                              ("Are you pay too much ? Click now !", 0), ("Are you pay too much ? Click now !", 1),
